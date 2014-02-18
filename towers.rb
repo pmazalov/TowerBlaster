@@ -10,7 +10,7 @@ end
 
 class Tower
 
-	attr_reader :height, :max_value, :is_complete
+	attr_reader :height, :max_value, :is_complete, :tower
 	def initialize(height, block_max_value)
 		@height      = height
 		@max_value   = block_max_value
@@ -63,6 +63,7 @@ class Tower
 end
 
 # p asd = Tower.new(10, 50)
+# p asd.tower
 #  p asd.is_finished
 # p  block = asd.generate_block
 # asd.swap_at(2,block)
