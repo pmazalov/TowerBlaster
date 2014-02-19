@@ -46,6 +46,7 @@ class Tower
 	def swap_at(coordinate, block)
 		@tower[coordinate] = block
 		adjust_block_relation
+		is_finished
 	end
 
 	def adjust_block_relation
