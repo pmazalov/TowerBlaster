@@ -54,8 +54,8 @@ class Cli
 	end
 
 	def initialize_towers(height, max_value)
-		@ai_tower     = Tower.new(height, max_value)
-		@player_tower = Tower.new(height, max_value)
+		@ai_tower     = Tower.new(height, max_value).generate_tower_blocks
+		@player_tower = Tower.new(height, max_value).generate_tower_blocks
 	end
 
 	def player_turn
@@ -77,6 +77,7 @@ class Cli
 			@player_tower.swap_at(position.to_i.pred, @block)
 			puts "Your tower:"
 			print_tower(@player_tower)
+			puts "\n"
 		elsif formated_input[0] == "no"
 			puts "Ok. Computers turn."
 		else

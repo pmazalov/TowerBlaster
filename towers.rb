@@ -17,17 +17,18 @@ class Tower
 		@is_complete = false
 		@tower = []
 
-		generate_tower
 	end
 	
 	def is_valid_value(value)
 		value <= max_value
 	end
 
-	def generate_tower
-		buffer = (1..max_value).to_a.shuffle[0,height]
-		buffer.each { |i| @tower << Block.new(i) }
+	def generate_tower_blocks(block_values = nil)
+		block_values ||= (1..max_value).to_a.shuffle[0,height]
+		block_values.each { |i| @tower << Block.new(i) }
 		adjust_block_relation
+
+		self
 	end
 
 	def is_finished
