@@ -27,6 +27,9 @@ class Tower
 		block_values ||= (1..max_value).to_a.shuffle[0,height]
 		block_values.each { |i| @tower << Block.new(i) }
 		adjust_block_relation
+		until is_finished == false
+			generate_tower_blocks
+		end
 
 		self
 	end
