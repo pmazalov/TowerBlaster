@@ -5,11 +5,11 @@ class Cli
 	def run
 		@exit = false
 		until @exit
-			puts "Insert blocks count and max value or write exit."
+			puts "Insert blocks count and max value!"
 			start_game gets
 		end
 
-		until @player_tower.is_finished or @ai_tower.is_finished
+		until @player_tower.is_finished or @Ai.ai_tower.is_finished
 			player_turn
 			ai_turn
 		end
@@ -18,7 +18,7 @@ class Cli
 			puts "Congratz player! You won!"
 		else
 			puts "Computer wins. Here is his tower:"
-			print_tower(@ai_tower)
+			print_tower(@Ai.ai_tower)
 		end
 
 
@@ -33,17 +33,12 @@ class Cli
 
 	def start_game(input_string)
 		user_input = input_string.scan(/\w+/)
-
-		if user_input[0] == "exit"
-			@exit = true
-		end
 		user_input = user_input.map(&:to_i)
-		p user_input
 
-		if user_input[0].zero? or user_input[1].zero?
+		if user_input.empty? or user_input[0].zero? or user_input[1].zero?
 			puts "Bad input! Must be <int> <int>"
 			@exit = false
-		elsif user_input[0] > user_input[1]
+		elsif user_input[0] >= user_input[1]
 			puts "First value must be smaller than the second!"
 			@exit = false
 		else
@@ -54,7 +49,8 @@ class Cli
 	end
 
 	def initialize_towers(height, max_value)
-		@ai_tower     = Tower.new(height, max_value).generate_tower_blocks
+		ai_tower     = Tower.new(height, max_value).generate_tower_blocks
+		@Ai = Ai.new(ai_tower)
 		@player_tower = Tower.new(height, max_value).generate_tower_blocks
 	end
 
@@ -66,7 +62,8 @@ class Cli
 	end
 
 	def ai_turn
-		
+		@block = @Ai.ai_tower.generate_block
+		@Ai.next_move(@block)
 	end
 
 	def user_decision(input_string)
