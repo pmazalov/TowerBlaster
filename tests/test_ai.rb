@@ -2,14 +2,37 @@ require "test/unit"
 require "../ai.rb"
 
 class TestAi < Test::Unit::TestCase
-	
-	def setup
+
+  def setup
   end
 
-  def test_ai_logic
-  	tower = Tower.new(3, 50).generate_tower_blocks([5, 10, 8])
-  	
-  	assert_equal tower.height, 3
+  def test_if_max_value_block_go_in_the_end
+    tower = Tower.new(3, 50).generate_tower_blocks([5, 10, 7])
+    block = Block.new(50)
+
+    comp_tower = Ai.new(tower)
+    comp_tower.next_move(block)
+
+    assert_equal comp_tower.ai_tower.tower[2].value, 50
   end
-	
+  
+  def test_if_min_value_block_go_in_the_end
+    tower = Tower.new(3, 50).generate_tower_blocks([5, 10, 7])
+    block = Block.new(1)
+
+    comp_tower = Ai.new(tower)
+    comp_tower.next_move(block)
+
+    assert_equal comp_tower.ai_tower.tower[0].value, 1
+  end
+
+  def test_if_middle_value_block_go_in_the_end
+    tower = Tower.new(3, 50).generate_tower_blocks([5, 10, 7])
+    block = Block.new(25)
+
+    comp_tower = Ai.new(tower)
+    comp_tower.next_move(block)
+
+    assert_equal comp_tower.ai_tower.tower[1].value, 25
+  end
 end
