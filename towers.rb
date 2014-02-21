@@ -9,13 +9,14 @@ class Block
 end
 
 class Tower
-  attr_reader :height, :max_value, :is_complete, :tower
+  attr_reader :height, :max_value, :is_complete, :tower, :score
 
   def initialize(height, block_max_value)
     @height      = height
     @max_value   = block_max_value
     @is_complete = false
     @tower = []
+    @score = 0
 
   end
 
@@ -48,6 +49,7 @@ class Tower
   def swap_at(coordinate, block)
     @tower[coordinate] = block
     adjust_block_relation
+    modify_score(coordinate)
     is_finished
   end
 
@@ -56,5 +58,18 @@ class Tower
       @tower[i].smaller_than_bottom = @tower[i].value < @tower[i.next].value
     end
     @tower.last.smaller_than_bottom = true
+  end
+
+  def count_score(tower_values, difference)
+    tower_values.each_cons(2)
+                .take_while { |current, following| current == following + difference }
+                .size
+  end
+
+  def modify_score(coordinate)
+    tower_values   = tower.map { |block| block.value }
+    lower_sequence = count_score(tower_values[coordinate..-1], -1)
+    upper_sequence = count_score(tower_values[0..coordinate].reverse, 1)
+    @score += 10 ** (lower_sequence + upper_sequence + 1)
   end
 end
