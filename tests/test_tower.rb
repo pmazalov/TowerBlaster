@@ -4,7 +4,7 @@ require "../towers.rb"
 class TestTower < Test::Unit::TestCase
   def setup
   end
-  
+
   def test_generate_tower_blocks
     tower = Tower.new(10, 50)
     tower.generate_tower_blocks
@@ -19,6 +19,7 @@ class TestTower < Test::Unit::TestCase
     assert_equal tower.max_value, 50
     assert_equal tower.is_complete, false
     assert_equal tower.tower, []
+    assert_equal tower.score, 0
   end
 
   def test_if_tower_is_finished
@@ -112,4 +113,25 @@ class TestTower < Test::Unit::TestCase
 
     assert_equal tower.is_finished, false
   end
+
+  def test_score
+    tower = Tower.new(4, 5)
+    tower.generate_tower_blocks([2, 1, 4, 5])
+    block = Block.new(3)
+
+    tower.swap_at(1, block)
+
+    assert_equal tower.score, 10 ** 4
+    assert_equal tower.modify_score(1), 2 * (10 ** 4)
+  end
+  def test_count_score
+    test_values = [5 ,6, 7, 3]
+    tower = Tower.new(4, 10)
+    tower.generate_tower_blocks(test_values)
+
+    assert_equal tower.count_score(test_values, -1), 2
+    assert_equal tower.count_score([2, 3, 4, 5, 6, 7], -1), 5
+    assert_equal tower.count_score([1, 5, 2, 3, 4, 5], -1), 0
+  end
+
 end
