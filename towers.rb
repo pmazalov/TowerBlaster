@@ -5,7 +5,7 @@ class Block
     @value              = value
     @smaller_than_bottom = :unknown
   end
-  
+
 end
 
 class Tower
@@ -18,7 +18,7 @@ class Tower
     @tower = []
 
   end
-  
+
   def is_valid_value(value)
     value <= max_value
   end
@@ -52,12 +52,8 @@ class Tower
   end
 
   def adjust_block_relation
-    0.upto(height - 2).each do |i|
-      if @tower[i].value < @tower[i.next].value
-        @tower[i].smaller_than_bottom = true
-      else
-        @tower[i].smaller_than_bottom = false
-      end
+    0.upto(height - 2).each do |i| 
+      @tower[i].smaller_than_bottom = @tower[i].value < @tower[i.next].value
     end
     @tower.last.smaller_than_bottom = true
   end
