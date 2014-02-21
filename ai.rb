@@ -23,6 +23,10 @@ class Ai
   end
 
   def get_interval
-    @interval = @ai_tower.max_value / @ai_tower.height
+    if (@ai_tower.max_value / @ai_tower.height) == 1
+      @interval = 2
+    else
+      @interval = @ai_tower.max_value / @ai_tower.height
+    end
   end
 end
