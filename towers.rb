@@ -9,8 +9,8 @@ class Block
 end
 
 class Tower
-
   attr_reader :height, :max_value, :is_complete, :tower
+
   def initialize(height, block_max_value)
     @height      = height
     @max_value   = block_max_value
@@ -25,7 +25,7 @@ class Tower
 
   def generate_tower_blocks(block_values = nil)
     block_values ||= (1..max_value).to_a.shuffle[0,height]
-    block_values.each { |i| @tower << Block.new(i) }
+    @tower = block_values.map { |i| Block.new(i) }
     adjust_block_relation
     until is_finished == false
       generate_tower_blocks
@@ -35,16 +35,14 @@ class Tower
   end
 
   def is_finished
-    is_complete = @tower.all? {|i| i.smaller_than_bottom == true}
+    is_complete = @tower.all? { |i| i.smaller_than_bottom == true }
   end
 
   def generate_block
-    buffer = []
-    while buffer.size != 1
+    loop do
       number = rand(1..max_value)
-      buffer << number unless @tower.any? {|i| i.value == number }
+      return Block.new(number) unless @tower.any? { |i| i.value == number }
     end
-    Block.new(buffer [0])
   end
 
   def swap_at(coordinate, block)
@@ -55,7 +53,7 @@ class Tower
 
   def adjust_block_relation
     0.upto(height - 2).each do |i|
-      if @tower[i].value < @tower[i + 1].value
+      if @tower[i].value < @tower[i.next].value
         @tower[i].smaller_than_bottom = true
       else
         @tower[i].smaller_than_bottom = false
@@ -63,12 +61,4 @@ class Tower
     end
     @tower.last.smaller_than_bottom = true
   end
-
 end
-
-# p asd = Tower.new(10, 50)
-# p asd.tower
-#  p asd.is_finished
-# p  block = asd.generate_block
-# asd.swap_at(2,block)
-# p asd
