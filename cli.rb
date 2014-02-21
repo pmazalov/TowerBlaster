@@ -15,7 +15,7 @@ class Cli
     end
 
     if @player_tower.is_finished
-      puts "Congratz player! You won!"
+      puts "Congratz player, You won! Your score is #{@player_tower.score}"
     else
       puts "Computer wins. Here is his tower:"
       print_tower(@Ai.ai_tower)
